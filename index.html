@@ -35,7 +35,7 @@
         td, th { border: 1px solid #e2e8f0; padding: 16px; }
         tr:nth-child(even) { background-color: #f8fafc; }
 
-        .modal-overlay { background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); }
+        .modal-overlay { background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); }
     </style>
 </head>
 <body class="bg-neutral-50 text-slate-900">
@@ -44,7 +44,6 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // 自定義 SVG 圖示組件
         const Icons = {
             Search: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
             Globe: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>,
@@ -53,12 +52,12 @@
             Wand2: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m2 22 5-5"/><path d="M9.5 14.5 16 8"/><path d="m17 2 5 5-.5.5a3.53 3.53 0 0 1-5 0l-1.5-1.5a3.53 3.53 0 0 1 0-5l.5-.5Z"/><path d="m18 10 2 2"/><path d="m15 13 2 2"/><path d="m12 16 2 2"/></svg>,
             History: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>,
             Trash2: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>,
-            Lightbulb: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .5 2.2 1.5 3.1.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
-            Sparkles: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>,
             X: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
-            Smartphone: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+            BookOpen: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+            Youtube: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-600"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.14 1 12 1 12s0 3.86.46 5.58a2.78 2.78 0 0 0 1.94 2c1.72.42 8.6.42 8.6.42s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.86 23 12 23 12s0-3.86-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
         };
 
+        // 重要：在執行環境中填入您的 API Key
         const apiKey = "AIzaSyBnXktSn2TZOV2tHq7uv255-R8WbwpBM50"; 
 
         const App = () => {
@@ -67,10 +66,10 @@
             const [result, setResult] = useState(null);
             const [error, setError] = useState(null);
             const [historyList, setHistoryList] = useState([]);
-            const [showInstallHelp, setShowInstallHelp] = useState(false);
+            const [showTutorial, setShowTutorial] = useState(false);
 
             useEffect(() => {
-                const saved = localStorage.getItem('ai_navigator_v5');
+                const saved = localStorage.getItem('ai_navigator_v9');
                 if (saved) {
                     try { setHistoryList(JSON.parse(saved)); } catch (e) { console.error(e); }
                 }
@@ -79,27 +78,26 @@
             const saveHistory = (q, ansArray) => {
                 const newList = [{ id: Date.now(), q, ans: ansArray, date: new Date().toLocaleString() }, ...historyList].slice(0, 15);
                 setHistoryList(newList);
-                localStorage.setItem('ai_navigator_v5', JSON.stringify(newList));
+                localStorage.setItem('ai_navigator_v9', JSON.stringify(newList));
             };
 
-            const callGemini = async (userQuery) => {
+            const callGemini = async (userQuery, retryCount = 0) => {
+                // 更新大腦：強化 NotebookLM 在會議紀錄與文件分析的推薦機率
                 const systemPrompt = `你是一位專業的 Google AI 產品解決方案專家。使用繁體中文回答。
-                你的目標是針對任務提供「最精確、最詳細」的 Google AI 工具建議。
-                
-                指令要求：
-                1. 必須明確指出特定的底層模型或工具名稱 (例如：Veo, Imagen 3, Gemini 1.5 Pro, NotebookLM 等)。
-                2. 「程式使用方法」必須包含：
-                   - 進入路徑 (例如：前往 Vertex AI Studio 或 Google Labs)。
-                   - 操作核心：該點擊哪個按鈕、輸入什麼樣的提示詞 (Prompt)。
-                   - 輸出處理：如何調整參數或導出結果。
-                3. 嚴禁推薦 OpenAI, Microsoft, Meta 等競爭對手。
-                
+                你的目標是針對任務推薦 Google 旗下的 AI 工具 (如 Gemini, Veo, NotebookLM, Imagen 3 等)。
+
+                特別規則：
+                1. 如果任務涉及「分析多份文件」、「會議紀錄整理」、「轉錄內容摘要」、「學術/專案知識庫」，必須優先推薦 NotebookLM。
+                2. 說明 NotebookLM 的優勢：支援大量文件上傳、自動生成摘要、可透過對話深度挖掘文件細節、自動生成音訊指南 (Audio Overview)。
+                3. 如果使用者需要「做成簡報或圖表」，推薦 NotebookLM 作為資料萃取工具，並搭配 Google Slides 中的 Gemini 進行可視化。
+
                 輸出 JSON 結構：
                 {
                   "recommendations": [
                     { 
-                      "name": "工具全稱 (含模型版本，例如: Google Veo 影片生成器)", 
-                      "method": "詳細的步驟指南：\\n1. 第一步...\\n2. 第二步...\\n3. 進階建議..." 
+                      "name": "工具與模型全稱 (例如: Google NotebookLM)", 
+                      "method": "詳細步驟指南：\\n1. 前往 NotebookLM 官網並上傳您的會議錄音稿或文件。\\n2. 點擊「摘要」或直接詢問 AI 特定問題。\\n3. 使用「筆記」功能整理成簡報大綱，再複製至 Google Slides。",
+                      "videoUrl": "YouTube 搜尋連結 (例如 https://www.youtube.com/results?search_query=NotebookLM+教學)" 
                     }
                   ]
                 }`;
@@ -122,9 +120,10 @@
                                                 type: "OBJECT",
                                                 properties: {
                                                     name: { type: "STRING" },
-                                                    method: { type: "STRING" }
+                                                    method: { type: "STRING" },
+                                                    videoUrl: { type: "STRING" }
                                                 },
-                                                required: ["name", "method"]
+                                                required: ["name", "method", "videoUrl"]
                                             }
                                         }
                                     },
@@ -133,10 +132,23 @@
                             }
                         })
                     });
-                    if (!response.ok) throw new Error('API Error');
+
+                    if (!response.ok) {
+                        if (retryCount < 5) {
+                            await new Promise(r => setTimeout(r, Math.pow(2, retryCount) * 1000));
+                            return callGemini(userQuery, retryCount + 1);
+                        }
+                        const errData = await response.json();
+                        throw new Error(errData.error?.message || "請求失敗");
+                    }
+
                     const data = await response.json();
                     return data.candidates?.[0]?.content?.parts?.[0]?.text;
                 } catch (err) {
+                    if (retryCount < 5) {
+                        await new Promise(r => setTimeout(r, Math.pow(2, retryCount) * 1000));
+                        return callGemini(userQuery, retryCount + 1);
+                    }
                     throw err;
                 }
             };
@@ -147,30 +159,23 @@
 
                 setLoading(true);
                 setError(null);
+                setResult(null);
+
                 try {
                     const ansText = await callGemini(queryText);
                     const ansData = JSON.parse(ansText);
-                    const recommendations = ansData.recommendations;
-                    setResult(recommendations);
-                    saveHistory(queryText, recommendations);
+                    setResult(ansData.recommendations);
+                    saveHistory(queryText, ansData.recommendations);
                 } catch (err) {
-                    console.error(err);
-                    setError('分析失敗，請確認網路連線。');
+                    setError(err.message || "發生錯誤，請稍後再試。");
                 } finally {
                     setLoading(false);
                 }
             };
 
-            const clearHistory = () => {
-                if (confirm('確定清除歷史紀錄？')) {
-                    setHistoryList([]);
-                    localStorage.removeItem('ai_navigator_v5');
-                }
-            };
-
             return (
-                <div className="min-h-screen pb-20">
-                    <div className="flex h-2 w-full sticky top-0 z-50 shadow-md">
+                <div className="min-h-screen pb-20 bg-neutral-50">
+                    <div className="flex h-2 w-full sticky top-0 z-50 shadow-sm">
                         <div className="flex-1 bg-[#4285F4]"></div>
                         <div className="flex-1 bg-[#EA4335]"></div>
                         <div className="flex-1 bg-[#FBBC05]"></div>
@@ -178,75 +183,87 @@
                     </div>
 
                     <main className="max-w-6xl mx-auto px-4 py-8 md:py-12">
-                        {/* 頂部按鈕區域 */}
-                        <div className="flex justify-end mb-4">
+                        <div className="flex justify-between items-center mb-8">
+                            <span className="bg-[#4285F4] text-white text-[10px] font-black px-2 py-1 rounded-md">V3.1 EXPERT MODE</span>
                             <button 
-                                onClick={() => setShowInstallHelp(true)}
-                                className="flex items-center gap-2 text-xs font-bold text-[#4285F4] bg-white px-4 py-2 rounded-full shadow-sm border border-slate-100 hover:bg-slate-50 transition-all"
+                                onClick={() => setShowTutorial(true)}
+                                className="flex items-center gap-2 text-sm font-bold text-slate-600 bg-white px-5 py-2.5 rounded-full shadow-sm border border-slate-200 hover:border-[#4285F4] hover:text-[#4285F4] transition-all"
                             >
-                                <Icons.Smartphone />
-                                手機安裝教學
+                                <Icons.BookOpen />
+                                如何使用
                             </button>
                         </div>
 
-                        <div className="text-center mb-8 md:mb-12 animate-fade-in">
-                            <div className="inline-flex items-center justify-center p-5 bg-white rounded-[2rem] text-[#4285F4] mb-6 shadow-sm border border-slate-100">
-                                <Icons.Globe />
-                            </div>
-                            <h1 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900 mb-4">Google AI 導航員 <span className="text-[#4285F4] text-lg md:text-xl font-bold ml-2">v2.1</span></h1>
-                            <p className="text-slate-500 text-base md:text-xl font-medium px-4">深度解析 Google AI 工具鏈，為您提供精確的執行步驟</p>
+                        <div className="text-center mb-10 animate-fade-in">
+                            <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-slate-900 mb-4">
+                                <span className="text-[#4285F4]">Google</span> AI 導航員
+                            </h1>
+                            <p className="text-slate-500 text-lg md:text-xl font-medium px-4">精準對接 NotebookLM, Veo 等專家級工具</p>
                         </div>
 
-                        <section className="bg-white rounded-[2rem] md:rounded-[3rem] shadow-2xl p-2 md:p-3 mb-8 md:mb-12 border border-slate-100 mx-2">
-                            <form onSubmit={handleSearch} className="flex flex-col md:flex-row items-center gap-3">
-                                <div className="flex-1 flex items-center gap-3 md:gap-5 px-4 md:px-8 w-full">
+                        <section className="bg-white rounded-[2.5rem] md:rounded-[4rem] shadow-2xl p-2 md:p-3 mb-12 border border-slate-100 mx-2 transition-all hover:shadow-indigo-100/50">
+                            <form onSubmit={handleSearch} className="flex flex-col md:flex-row items-center gap-2">
+                                <div className="flex-1 flex items-center gap-4 px-6 w-full">
                                     <div className="text-slate-400 shrink-0"><Icons.Search /></div>
                                     <input 
                                         type="text" 
                                         value={queryText}
                                         onChange={(e) => setQueryText(e.target.value)}
-                                        placeholder="輸入任務描述，例如：我想生成一段高品質的廣告影片..."
-                                        className="w-full bg-transparent py-4 md:py-6 text-base md:text-xl outline-none font-medium text-slate-700"
+                                        placeholder="例如：我要做會議記錄，並將它做成圖表..."
+                                        className="w-full bg-transparent py-5 md:py-7 text-lg md:text-2xl outline-none font-bold text-slate-800"
                                     />
                                 </div>
                                 <button 
                                     disabled={loading}
-                                    className="w-full md:w-auto bg-[#4285F4] hover:bg-[#3367D6] disabled:bg-slate-300 text-white px-8 md:px-12 py-4 md:py-6 rounded-2xl md:rounded-[2.5rem] font-black text-base md:text-lg flex items-center justify-center gap-3 transition-all shadow-xl active:scale-95"
+                                    className="w-full md:w-auto bg-[#4285F4] hover:bg-[#3367D6] disabled:bg-slate-300 text-white px-10 md:px-16 py-5 md:py-7 rounded-[2rem] md:rounded-[3.5rem] font-black text-xl flex items-center justify-center gap-3 transition-all active:scale-95"
                                 >
                                     {loading ? <Icons.Loader2 /> : <Icons.Zap />}
-                                    {loading ? '分析中...' : '獲取指令'}
+                                    {loading ? '深度分析中' : '獲取建議'}
                                 </button>
                             </form>
                         </section>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-10">
-                            <div className="lg:col-span-3 space-y-6 md:space-y-8">
-                                {error && <div className="bg-red-50 text-red-600 p-6 rounded-3xl text-lg font-bold border border-red-100">{error}</div>}
+                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                            <div className="lg:col-span-3 space-y-6">
+                                {error && (
+                                    <div className="bg-red-50 text-red-700 p-6 rounded-3xl border border-red-100 animate-fade-in flex gap-3">
+                                        <div className="font-bold">⚠️</div>
+                                        <p className="text-sm font-bold">{error}</p>
+                                    </div>
+                                )}
 
                                 {result ? (
-                                    <div className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] border border-slate-100 shadow-xl overflow-hidden animate-fade-in">
-                                        <div className="bg-[#4285F4] px-6 md:px-10 py-4 md:py-6 flex items-center justify-between">
-                                            <div className="flex items-center gap-4 text-white">
-                                                <Icons.Sparkles />
-                                                <h3 className="font-black text-lg md:text-xl">專家技術建議清單</h3>
+                                    <div className="bg-white rounded-[2rem] md:rounded-[3rem] border border-slate-100 shadow-xl overflow-hidden animate-fade-in">
+                                        <div className="bg-[#f8fafc] px-8 py-6 border-b border-slate-100 flex items-center justify-between">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-3 h-3 rounded-full bg-[#34A853]"></div>
+                                                <h3 className="font-black text-slate-800 text-xl">解決方案建議</h3>
                                             </div>
                                         </div>
                                         <div className="overflow-x-auto">
-                                            <table className="w-full text-left min-w-[500px] md:min-w-0">
+                                            <table className="w-full text-left">
                                                 <thead>
                                                     <tr>
-                                                        <th className="w-1/3 py-4 px-6 md:py-5 md:px-10">推薦程式與模型</th>
-                                                        <th className="py-4 px-6 md:py-5 md:px-10">具體操作步驟與使用方法</th>
+                                                        <th className="w-1/4 py-5 px-8 text-xs font-black tracking-widest">建議程式</th>
+                                                        <th className="w-1/2 py-5 px-8 text-xs font-black tracking-widest">使用方法</th>
+                                                        <th className="w-1/4 py-5 px-8 text-xs font-black tracking-widest">影音範例</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {result.map((row, idx) => (
-                                                        <tr key={idx} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/50 transition-colors">
-                                                            <td className="py-6 px-6 md:py-8 md:px-10 font-black text-[#4285F4] text-base md:text-lg align-top leading-tight">
-                                                                {row.name}
-                                                            </td>
-                                                            <td className="py-6 px-6 md:py-8 md:px-10 text-slate-600 whitespace-pre-wrap leading-relaxed md:leading-loose text-sm md:text-base align-top font-medium">
-                                                                {row.method}
+                                                        <tr key={idx} className="hover:bg-blue-50/30 transition-colors">
+                                                            <td className="py-8 px-8 font-black text-[#4285F4] text-lg align-top leading-tight">{row.name}</td>
+                                                            <td className="py-8 px-8 text-slate-600 whitespace-pre-wrap leading-relaxed text-base align-top font-medium">{row.method}</td>
+                                                            <td className="py-8 px-8 align-top">
+                                                                <a 
+                                                                    href={row.videoUrl} 
+                                                                    target="_blank" 
+                                                                    rel="noopener noreferrer"
+                                                                    className="inline-flex items-center gap-2 bg-slate-50 hover:bg-red-50 text-slate-700 hover:text-red-600 px-4 py-3 rounded-2xl border border-slate-100 hover:border-red-100 transition-all font-bold text-sm"
+                                                                >
+                                                                    <Icons.Youtube />
+                                                                    教學影片
+                                                                </a>
                                                             </td>
                                                         </tr>
                                                     ))}
@@ -254,98 +271,53 @@
                                             </table>
                                         </div>
                                     </div>
-                                ) : (
-                                    <div className="bg-white/40 border-4 border-dashed border-slate-200 rounded-[2rem] md:rounded-[3rem] p-12 md:p-24 text-center mx-2">
-                                        <div className="bg-white w-20 md:w-24 h-20 md:h-24 rounded-[1.5rem] md:rounded-[2rem] flex items-center justify-center mx-auto mb-6 md:mb-8 shadow-md text-slate-200">
+                                ) : !error && (
+                                    <div className="bg-white/50 border-4 border-dashed border-slate-200 rounded-[3rem] p-20 text-center flex flex-col items-center">
+                                        <div className="bg-white w-24 h-24 rounded-full flex items-center justify-center shadow-md text-slate-200 mb-6">
                                             <Icons.Wand2 />
                                         </div>
-                                        <h3 className="text-xl md:text-2xl font-black text-slate-400">等待任務指令...</h3>
-                                        <p className="text-slate-400 mt-4 text-sm md:text-lg">例如輸入：「幫我做一個 10 秒的影片生成」</p>
+                                        <h3 className="text-2xl font-black text-slate-400">等待任務輸入...</h3>
+                                        <p className="text-slate-400 mt-2">NotebookLM 等專家級工具現已加入優先推薦清單</p>
                                     </div>
                                 )}
                             </div>
 
-                            <div className="space-y-6 md:space-y-8 px-2">
-                                <div className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-8 shadow-lg border border-slate-100">
-                                    <div className="flex items-center justify-between mb-6 md:mb-8">
-                                        <h4 className="font-black text-slate-800 flex items-center gap-3">
-                                            <Icons.History />
-                                            導航歷史
-                                        </h4>
-                                        <button onClick={clearHistory} className="text-[10px] font-black text-slate-400 hover:text-red-500 uppercase tracking-widest transition-colors">Clear</button>
-                                    </div>
-                                    <div className="space-y-3 md:space-y-4 max-h-[300px] overflow-y-auto scrollbar-hide">
+                            <div className="space-y-6">
+                                <div className="bg-white rounded-[2rem] p-8 shadow-md border border-slate-100">
+                                    <h4 className="font-black text-slate-800 mb-6 flex items-center gap-3">
+                                        <Icons.History />
+                                        最近紀錄
+                                    </h4>
+                                    <div className="space-y-4">
                                         {historyList.map((item) => (
                                             <div 
                                                 key={item.id} 
-                                                onClick={() => { setQueryText(item.q); setResult(item.ans); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                                                className="group cursor-pointer p-4 rounded-xl bg-slate-50 hover:bg-indigo-50 border border-transparent hover:border-indigo-100 transition-all relative"
+                                                onClick={() => { setQueryText(item.q); setResult(item.ans); setError(null); }}
+                                                className="cursor-pointer p-4 rounded-2xl bg-slate-50 hover:bg-blue-50 border border-transparent hover:border-blue-100 transition-all"
                                             >
-                                                <p className="text-xs md:text-sm font-bold text-slate-700 truncate mb-1">{item.q}</p>
-                                                <p className="text-[10px] text-slate-400 font-bold">{item.date}</p>
+                                                <p className="text-sm font-bold text-slate-700 truncate">{item.q}</p>
+                                                <p className="text-[10px] text-slate-400 font-bold mt-1">{item.date}</p>
                                             </div>
                                         ))}
                                     </div>
-                                </div>
-
-                                <div className="bg-slate-900 rounded-[1.5rem] md:rounded-[2.5rem] p-8 md:p-10 text-white shadow-2xl relative overflow-hidden">
-                                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#4285F4]/20 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-                                    <h4 className="font-black mb-4 flex items-center gap-3 text-[#FBBC05]">
-                                        <Icons.Lightbulb />
-                                        導航提示
-                                    </h4>
-                                    <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-medium relative z-10">
-                                        現在的導航員會更傾向推薦您使用 **Google Cloud Vertex AI** 或 **Google Labs** 中的最新工具，這些地方通常有比一般版更強大的功能。
-                                    </p>
                                 </div>
                             </div>
                         </div>
                     </main>
 
-                    {/* 手機安裝教學彈窗 */}
-                    {showInstallHelp && (
-                        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 modal-overlay animate-fade-in" onClick={() => setShowInstallHelp(false)}>
-                            <div className="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
-                                <div className="bg-[#4285F4] p-6 text-white flex justify-between items-center">
-                                    <h3 className="font-black text-xl flex items-center gap-2">
-                                        <Icons.Smartphone />
-                                        如何將此工具設為 APP
-                                    </h3>
-                                    <button onClick={() => setShowInstallHelp(false)} className="p-1 hover:bg-white/20 rounded-full transition-all">
-                                        <Icons.X />
-                                    </button>
+                    {/* 教學彈窗 */}
+                    {showTutorial && (
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 modal-overlay animate-fade-in" onClick={() => setShowTutorial(false)}>
+                            <div className="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
+                                <div className="bg-[#4285F4] p-8 text-white relative">
+                                    <h3 className="font-black text-2xl flex items-center gap-3">更新日誌 V3.1</h3>
+                                    <button onClick={() => setShowTutorial(false)} className="absolute top-8 right-8 p-2 hover:bg-white/20 rounded-full transition-all"><Icons.X /></button>
                                 </div>
-                                <div className="p-8 space-y-6">
-                                    <div className="space-y-3">
-                                        <div className="flex items-center gap-2 font-black text-slate-800">
-                                            <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs">1</div>
-                                            iPhone (Safari)
-                                        </div>
-                                        <p className="text-sm text-slate-600 leading-relaxed ml-8">
-                                            不要使用 Line 或 FB 內建瀏覽器打開。請點擊 <span className="font-bold text-[#4285F4]">分享按鈕</span>，向下滑動找到 <span className="font-bold text-slate-800">「加入主畫面」</span> (Add to Home Screen)。
-                                        </p>
-                                    </div>
-                                    <div className="space-y-3">
-                                        <div className="flex items-center gap-2 font-black text-slate-800">
-                                            <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs">2</div>
-                                            Android (Chrome)
-                                        </div>
-                                        <p className="text-sm text-slate-600 leading-relaxed ml-8">
-                                            點擊右上角 <span className="font-bold text-slate-800">三個點 (⋮)</span> 選單，選擇 <span className="font-bold text-[#4285F4]">「安裝應用程式」</span> 或 <span className="font-bold text-slate-800">「加入主畫面」</span>。
-                                        </p>
-                                    </div>
-                                    <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100 flex gap-3">
-                                        <div className="text-amber-500 shrink-0"><Icons.Lightbulb /></div>
-                                        <p className="text-xs text-amber-700 leading-relaxed font-medium">
-                                            提示：如果沒看到選項，請確認網址開頭是 <span className="underline italic">https://</span> 而非從本地檔案開啟。
-                                        </p>
-                                    </div>
-                                    <button 
-                                        onClick={() => setShowInstallHelp(false)}
-                                        className="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-lg shadow-lg"
-                                    >
-                                        我知道了
-                                    </button>
+                                <div className="p-8 space-y-4">
+                                    <p className="text-slate-600 font-bold">1. 專家模式：現在會優先推薦 NotebookLM 進行深度文件分析。</p>
+                                    <p className="text-slate-600 font-medium">2. 複合建議：教您如何搭配多個 Google AI 完成圖表或簡報。</p>
+                                    <p className="text-slate-600 font-medium">3. 連結優化：教學影片連結更精確地指向專家級工具。</p>
+                                    <button onClick={() => setShowTutorial(false)} className="w-full bg-[#4285F4] text-white py-4 rounded-2xl font-black mt-4 shadow-lg">開始導航</button>
                                 </div>
                             </div>
                         </div>
